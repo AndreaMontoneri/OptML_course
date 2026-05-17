@@ -22,7 +22,7 @@ def grid_search(y, tx, w0, w1):
         for ind_col, col in enumerate(w1):
             w = np.array([row, col])
             e = y - tx.dot(w)
-            losses[ind_row, ind_col] = 1/2*np.mean(e**2)
+            losses[ind_row, ind_col] = 1 / 2 * np.mean(e**2)
     return losses
 
 

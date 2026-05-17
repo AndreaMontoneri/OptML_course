@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
 """some helper functions."""
+
 import numpy as np
 
 
 def load_data(sub_sample=True, add_outlier=False):
     """Load data and convert it to the metric system."""
     path_dataset = "height_weight_genders.csv"
-    data = np.genfromtxt(
-        path_dataset, delimiter=",", skip_header=1, usecols=[1, 2])
+    data = np.genfromtxt(path_dataset, delimiter=",", skip_header=1, usecols=[1, 2])
     height = data[:, 0]
     weight = data[:, 1]
     gender = np.genfromtxt(
-        path_dataset, delimiter=",", skip_header=1, usecols=[0],
-        converters={0: lambda x: 0 if "Male" in x else 1})
+        path_dataset,
+        delimiter=",",
+        skip_header=1,
+        usecols=[0],
+        converters={0: lambda x: 0 if "Male" in x else 1},
+    )
     # Convert to metric system
     height *= 0.025
     weight *= 0.454
@@ -25,16 +29,16 @@ def load_data(sub_sample=True, add_outlier=False):
     if add_outlier:
         # outlier experiment
         height = np.concatenate([height, [1.1, 1.2]])
-        weight = np.concatenate([weight, [51.5/0.454, 55.3/0.454]])
+        weight = np.concatenate([weight, [51.5 / 0.454, 55.3 / 0.454]])
 
     return height, weight, gender
 
 
 def standardize(x):
     """Standardize the original data set."""
-    mean_x = np.mean(x,axis = 0)
+    mean_x = np.mean(x, axis=0)
     x = x - mean_x
-    std_x = np.std(x, axis = 0)
+    std_x = np.std(x, axis=0)
     x = x / std_x
     return x, mean_x, std_x
 
@@ -72,4 +76,3 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
-
