@@ -1,12 +1,13 @@
 """Common optimizers."""
 
+from time import time
 
 import numpy as np
-from time import time
+
 
 def gradient_descent(init, steps, grad, proj=lambda x: x, num_to_keep=None):
     """Projected gradient descent.
-    
+
     Parameters
     ----------
         initial : array
@@ -19,7 +20,7 @@ def gradient_descent(init, steps, grad, proj=lambda x: x, num_to_keep=None):
             mapping arrays to arrays of same shape
         num_to_keep : integer, optional
             number of points to keep
-        
+
     Returns
     -------
         List of points computed by projected gradient descent and the wall clock time it took to compute them. Length of the
@@ -33,22 +34,22 @@ def gradient_descent(init, steps, grad, proj=lambda x: x, num_to_keep=None):
         ts.append(time() - start)
         if num_to_keep:
             xs = xs[-num_to_keep:]
-            ts = ts[-num_to_kepp:]
+            ts = ts[-num_to_keep:]
     return xs, ts
 
 
 def frank_wolfe(initial, update_oracle, num_steps, num_to_keep=None):
-    """ Frank-Wolfe.
-    
+    """Frank-Wolfe.
+
         Frank-Wolfe (Conditional gradient) for first-order optimization.
-    
+
     Parameters:
     -----------
         initial: array,
             initial starting point
-        update_oracle: function, mapping points to points, 
+        update_oracle: function, mapping points to points,
             computes the next iterate given the current iterate and iteration number
-        num_steps: integer, 
+        num_steps: integer,
             number of steps to run the algorithm for
     Returns:
     --------
@@ -58,9 +59,9 @@ def frank_wolfe(initial, update_oracle, num_steps, num_to_keep=None):
     ts = [0]
     start = time()
     for step in range(num_steps):
-        xs.append(update_oracle(xs[-1],step))
+        xs.append(update_oracle(xs[-1], step))
         ts.append(time() - start)
         if num_to_keep:
             xs = xs[-num_to_keep:]
-            ts = ts[-num_to_kepp:]
+            ts = ts[-num_to_keep:]
     return xs, ts
